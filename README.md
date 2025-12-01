@@ -47,7 +47,7 @@ Go to `Settings > Secrets and variables > Actions` and add:
 
 ### Step 4: Create and Upload Task
 
-1. Go to your GitHub Pages frontend or [email-sender.yliu.tech](https://bulk-email-sender.yliu.tech)
+1. Go to your GitHub Pages frontend or [bulk-email-sender.yliu.tech](https://bulk-email-sender.yliu.tech)
 2. Fill out the email form and upload a CSV with [right format](#-csv-file-format)
 3. Click "Generate Task JSON"
 4. Download the `.json` file
