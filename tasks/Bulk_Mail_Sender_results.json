@@ -1,0 +1,9 @@
+{
+  "taskName": "Bulk_Mail_Sender",
+  "totalRecipients": 2,
+  "successCount": 2,
+  "failureCount": 0,
+  "errors": [],
+  "startTime": "2026-05-26T05:16:07.146Z",
+  "endTime": "2026-05-26T05:16:16.523Z"
+}

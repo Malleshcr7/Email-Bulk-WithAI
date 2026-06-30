@@ -1,137 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulk Email Sender</title>
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
-    <link rel="manifest" href="assets/favicon/site.webmanifest">   
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Email Sender — Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
+</head>
 <body>
-    <header class="header" style="background-color: white;">
-        <div style="max-width: 960px; margin: 0 auto; padding: 0 1rem;">
-          <nav class="navbar" style="display: flex; align-items: center; padding: 0.05rem 0;">
-            <a href="http://yliu.tech" class="logo">
-              <img src="assets/favicon/android-chrome-512x512.png" alt="YAL Logo"
-                   style="height: 50px; width: 50px; border-radius: 6px;">
-            </a>
-          </nav>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">✉</div>
+        <div>
+          <div class="brand-title">Bulk Email</div>
+          <div class="brand-sub">Sender Dashboard</div>
         </div>
-    </header>
-    <div class="container">
-        <header>
-            <h1>Bulk Email Sender</h1>
-            <p>
-              A zero-cost, open-source, serverless system for sending personalized bulk emails using either GitHub Actions or your local machine. It uses SMTP to deliver emails and supports templated content, recipient list management via CSV, and detailed delivery reporting.
-            </p>
-            <div style="margin-top: 1rem;">
-              <a href="https://github.com/jumpjumptiger007/bulk-email-sender"
-                 class="github-button"
-                 style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #3182ce; color: white; text-decoration: none; border-radius: 6px; font-size: 1rem; font-weight: 500; transition: background-color 0.3s;"
-                 target="_blank">
-                View Project on GitHub
-              </a>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active" href="/overview" data-page="overview">
+          <span class="nav-icon">📊</span> Overview
+        </a>
+        <a class="nav-item" href="/create" data-page="create">
+          <span class="nav-icon">✏️</span> Create Task
+        </a>
+        <a class="nav-item" href="/tasks" data-page="tasks">
+          <span class="nav-icon">📋</span> Tasks
+        </a>
+        <a class="nav-item" href="/niche" data-page="niche">
+          <span class="nav-icon">🔍</span> Niche Search
+        </a>
+        <a class="nav-item" href="/results" data-page="results">
+          <span class="nav-icon">📈</span> Results
+        </a>
+        <a class="nav-item" href="/history" data-page="history">
+          <span class="nav-icon">🕐</span> History
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div id="serverStatus" class="status-badge offline">Static Mode</div>
+        <div id="trialStatus" class="trial-card hidden">
+          <div class="trial-title">Free Trial</div>
+          <div id="trialSummary" class="trial-summary"></div>
+          <div id="trialMeta" class="trial-meta"></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1 id="pageTitle">Overview</h1>
+        <div class="topbar-actions">
+          <label class="theme-toggle" for="themeToggle">
+            <input type="checkbox" id="themeToggle">
+            <span class="theme-toggle-track">
+              <span class="theme-toggle-label theme-toggle-dark">Dark</span>
+              <span class="theme-toggle-thumb"></span>
+              <span class="theme-toggle-label theme-toggle-light">Light</span>
+            </span>
+          </label>
+          <button id="refreshBtn" class="btn btn-ghost">↻ Refresh</button>
+        </div>
+      </header>
+
+      <!-- Overview -->
+      <section id="page-overview" class="page active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Tasks</div>
+            <div class="stat-value" id="statTasks">0</div>
+          </div>
+          <div class="stat-card success">
+            <div class="stat-label">Emails Sent</div>
+            <div class="stat-value" id="statSent">0</div>
+          </div>
+          <div class="stat-card danger">
+            <div class="stat-label">Failed</div>
+            <div class="stat-value" id="statFailed">0</div>
+          </div>
+          <div class="stat-card info">
+            <div class="stat-label">Recipients</div>
+            <div class="stat-value" id="statRecipients">0</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Recent Tasks</h2>
+            <button class="btn btn-primary btn-sm" data-goto="create">+ New Task</button>
+          </div>
+          <div id="recentTasksTable" class="table-wrap"></div>
+        </div>
+      </section>
+
+      <!-- Create Task -->
+      <section id="page-create" class="page">
+        <div class="panel ai-panel">
+          <div class="panel-header">
+            <h2>✨ AI Task Generator</h2>
+            <span class="badge badge-muted" id="aiModelBadge">Gemini 2.5 Flash</span>
+          </div>
+          <div class="form-group">
+            <label for="aiPrompt">Describe your email campaign</label>
+            <textarea id="aiPrompt" rows="3" placeholder="e.g. Welcome email for new customers at a SaaS company. Mention their company name and offer a 14-day free trial."></textarea>
+          </div>
+          <div class="actions">
+            <button id="aiGenerateBtn" class="btn btn-primary">Generate with AI</button>
+            <span id="aiLoading" class="ai-loading hidden">Generating...</span>
+          </div>
+          <p id="aiHint" class="help-text">Upload CSV first so AI uses your column names as variables.</p>
+        </div>
+
+        <div class="panel">
+          <h2>Create Email Task</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="taskName">Task Name</label>
+              <input type="text" id="taskName" placeholder="spring_campaign">
             </div>
-        </header>
-        <main>
-            <section class="email-form">
-                <h2>Create Email Task</h2>
-                
-                <div class="form-group">
-                    <label for="subject">Email Subject:</label>
-                    <input type="text" id="subject" placeholder="Enter email subject">
-                </div>
+            <div class="form-group">
+              <label for="subject">Email Subject</label>
+              <input type="text" id="subject" placeholder="Hello, {{name}}!">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="template">Email Template (HTML)</label>
+            <textarea id="template" rows="10" placeholder="<h2>Hello, {{name}}!</h2><p>Your email is {{email}}</p>"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Template Variables</label>
+            <div class="tag-list">
+              <code>{{name}}</code><code>{{email}}</code><code>{{company}}</code><code>{{custom1}}</code>
+            </div>
+            <p class="help-text">CSV column names must match variable names</p>
+          </div>
+          <div class="form-group">
+            <label for="csvFile">Recipients CSV</label>
+            <input type="file" id="csvFile" accept=".csv">
+            <p class="help-text">Must include an <code>email</code> column</p>
+          </div>
+          <div id="recipientsTable" class="table-wrap"></div>
+          <div class="actions">
+            <button id="previewBtn" class="btn btn-secondary">Preview</button>
+            <button id="generateBtn" class="btn btn-primary">Save Task</button>
+            <button id="downloadBtn" class="btn btn-ghost">Download JSON</button>
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <label for="template">Email Template:</label>
-                    <textarea id="template" placeholder="Enter email content, you can use variables like {{name}}"></textarea>
-                </div>
+        <div id="previewSection" class="panel hidden">
+          <h2>Email Preview</h2>
+          <div class="preview-box">
+            <div class="preview-subject" id="previewSubject"></div>
+            <div class="preview-body" id="previewBody"></div>
+          </div>
+          <button id="closePreviewBtn" class="btn btn-ghost">Close</button>
+        </div>
 
-                <div class="form-group">
-                    <h3>Template Variables Guide</h3>
-                    <p>You can use the following variable formats in your email template:</p>
-                    <ul>
-                        <li><code>{{name}}</code> - Recipient's name</li>
-                        <li><code>{{email}}</code> - Recipient's email</li>
-                        <li><code>{{custom1}}</code>, <code>{{custom2}}</code> - Other custom fields</li>
-                    </ul>
-                    <p>The column names in your CSV file should match the variable names</p>
-                </div>
+        <div id="jsonOutput" class="panel hidden">
+          <h2>Generated JSON</h2>
+          <pre id="jsonDisplay"></pre>
+          <button id="copyBtn" class="btn btn-secondary">Copy JSON</button>
+        </div>
+      </section>
 
-                <div class="form-group">
-                    <label for="csvFile">Recipients CSV File:</label>
-                    <input type="file" id="csvFile" accept=".csv">
-                    <p class="help-text">CSV file should include headers in the first row and at least one "email" column</p>
-                </div>
+      <!-- Tasks -->
+      <section id="page-tasks" class="page">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>All Tasks</h2>
+            <button class="btn btn-primary btn-sm" data-goto="create">+ New Task</button>
+          </div>
+          <div id="tasksTable" class="table-wrap"></div>
+        </div>
+      </section>
 
-                <div class="recipients-preview">
-                    <h3>Recipients Preview</h3>
-                    <div id="recipientsTable">
-                        <!-- CSV preview will be displayed here -->
-                    </div>
-                </div>
+      <!-- Niche Search -->
+      <section id="page-niche" class="page">
+        <div class="panel">
+          <h2>Niche Search</h2>
+          <p class="help-text" style="margin-bottom:16px">Search businesses via Google Custom Search API. Finds websites first, then crawls contact pages for emails.</p>
+          <p id="nicheProviderHint" class="help-text" style="margin-bottom:16px"></p>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="nicheInput">Niche / Industry</label>
+              <input type="text" id="nicheInput" placeholder="dental clinics">
+            </div>
+            <div class="form-group">
+              <label for="locationInput">Location</label>
+              <input type="text" id="locationInput" placeholder="Hyderabad">
+            </div>
+            <div class="form-group">
+              <label for="nicheLimit">Result Limit</label>
+              <select id="nicheLimit">
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button id="nicheSearchBtn" class="btn btn-primary">Search</button>
+            <span id="nicheLoading" class="ai-loading hidden">Searching multiple sources...</span>
+          </div>
+        </div>
 
-                <div class="form-group">
-                    <label for="taskName">Task Name:</label>
-                    <input type="text" id="taskName" placeholder="Enter task name">
-                </div>
+        <div id="nicheMessage" class="panel hidden"></div>
 
-                <div class="actions">
-                    <button id="previewBtn">Preview Email</button>
-                    <button id="generateBtn">Generate Task JSON</button>
-                </div>
-            </section>
+        <div id="nicheStats" class="stats-grid hidden"></div>
 
-            <section class="preview-section" id="previewSection" style="display: none;">
-                <h2>Email Preview</h2>
-                <div class="preview-container">
-                    <div class="preview-header">
-                        <div class="preview-subject" id="previewSubject"></div>
-                    </div>
-                    <div class="preview-body" id="previewBody"></div>
-                </div>
-                <div class="actions">
-                    <button id="closePreviewBtn">Close Preview</button>
-                </div>
-            </section>
+        <div id="nicheResultsPanel" class="panel hidden">
+          <div class="panel-header">
+            <h2>Results</h2>
+            <div class="table-actions">
+              <label class="niche-skip-no-email" for="nicheSkipNoEmail">
+                <input type="checkbox" id="nicheSkipNoEmail" checked>
+                Skip no email
+              </label>
+              <button id="nicheDownloadBtn" class="btn btn-secondary btn-sm">Download CSV</button>
+              <button id="nicheUseBtn" class="btn btn-primary btn-sm">Use in Create Task</button>
+            </div>
+          </div>
+          <div id="nicheResultsTable" class="table-wrap"></div>
+        </div>
+      </section>
 
-            <section class="json-output" id="jsonOutput" style="display: none;">
-                <h2>Task JSON</h2>
-                <pre id="jsonDisplay"></pre>
-                <div class="actions">
-                    <button id="downloadBtn">Download JSON File</button>
-                    <button id="copyBtn">Copy JSON</button>
-                </div>
-                <div class="instructions">
-                    <h3>Usage Instructions</h3>
-                    <ol>
-                        <li>Download the generated JSON file</li>
-                        <li>Upload the file to the <code>tasks</code> directory in your GitHub repository</li>
-                        <li>After uploading, GitHub Actions will automatically process the task and send emails</li>
-                    </ol>
-                </div>
-            </section>
-        </main>
+      <!-- Results -->
+      <section id="page-results" class="page">
+        <div class="panel">
+          <h2>Delivery Results</h2>
+          <div id="resultsList"></div>
+        </div>
+      </section>
 
-        <footer class="page-footer" style="margin-top: 3rem; text-align: center; color: #6b7280; font-size: 0.875rem; padding: 2rem 0; border-top: 1px solid #e5e7eb;">
-            <p>
-             &copy; 2025
-             <a href="https://yliu.tech/" style="color: #3182ce; text-decoration: none; font-weight: 500;">
-              Yiqiang Adrian Liu
-             </a>
-             . All rights reserved. View the full project on
-             <a href="https://github.com/jumpjumptiger007/bulk-email-sender" style="color: #3182ce; text-decoration: none; font-weight: 500;">
-              GitHub
-             </a>
-            </p>
-        </footer>
+      <!-- History -->
+      <section id="page-history" class="page">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Activity History</h2>
+            <select id="historyFilter" class="history-filter">
+              <option value="all">All</option>
+              <option value="niche">Niche Search</option>
+              <option value="task">Tasks</option>
+              <option value="send">Email Sends</option>
+            </select>
+          </div>
+          <div id="historyTable" class="table-wrap"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Confirm</h3>
+        <button id="modalClose" class="modal-close">&times;</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+      <div id="modalActions" class="modal-actions"></div>
     </div>
+  </div>
 
-    <script src="js/papaparse.min.js"></script>
-    <script src="js/script.js"></script>
+  <script src="js/papaparse.min.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>

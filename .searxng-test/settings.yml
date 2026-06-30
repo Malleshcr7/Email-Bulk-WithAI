@@ -1,0 +1,9 @@
+use_default_settings: true
+
+server:
+  secret_key: "test-secret-key-for-local-dev-only"
+
+search:
+  formats:
+    - html
+    - json

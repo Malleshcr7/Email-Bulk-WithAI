@@ -1,0 +1,20 @@
+{
+  "taskName": "Test",
+  "subject": "Testing purpose",
+  "template": "We are testing",
+  "recipients": [
+    {
+      "name": "Mallesh",
+      "email": "telugumallesh79@gmail.com",
+      "company": "Example Corp",
+      "custom1": "Test User 1"
+    },
+    {
+      "name": "Mallesh",
+      "email": "telugumallesh0757@gmail.com",
+      "company": "Example Corp",
+      "custom1": "Test User 2"
+    }
+  ],
+  "createdAt": "2026-05-26T05:11:40.529Z"
+}
