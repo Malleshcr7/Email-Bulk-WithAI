@@ -1,9 +1,12 @@
 {
   "taskName": "Test",
   "totalRecipients": 2,
-  "successCount": 2,
-  "failureCount": 0,
-  "errors": [],
-  "startTime": "2026-05-26T05:11:46.657Z",
-  "endTime": "2026-05-26T05:11:55.970Z"
+  "successCount": 0,
+  "failureCount": 2,
+  "errors": [
+    "telugumallesh79@gmail.com: connect ECONNREFUSED 127.0.0.1:587",
+    "telugumallesh0757@gmail.com: connect ECONNREFUSED 127.0.0.1:587"
+  ],
+  "startTime": "2026-06-30T01:20:46.247Z",
+  "endTime": "2026-06-30T01:20:46.248Z"
 }

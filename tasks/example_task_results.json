@@ -1,9 +1,13 @@
 {
   "taskName": "example_task",
   "totalRecipients": 3,
-  "successCount": 3,
-  "failureCount": 0,
-  "errors": [],
-  "startTime": "2025-04-04T01:06:49.027Z",
-  "endTime": "2025-04-04T01:06:54.457Z"
+  "successCount": 0,
+  "failureCount": 3,
+  "errors": [
+    "test1@example.com: connect ECONNREFUSED 127.0.0.1:587",
+    "test2@example.com: connect ECONNREFUSED 127.0.0.1:587",
+    "test3@example.com: connect ECONNREFUSED 127.0.0.1:587"
+  ],
+  "startTime": "2026-06-30T01:20:46.249Z",
+  "endTime": "2026-06-30T01:20:46.252Z"
 }

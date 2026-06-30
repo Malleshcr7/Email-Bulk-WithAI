@@ -1,9 +1,12 @@
 {
   "taskName": "Bulk_Mail_Sender",
   "totalRecipients": 2,
-  "successCount": 2,
-  "failureCount": 0,
-  "errors": [],
-  "startTime": "2026-05-26T05:16:07.146Z",
-  "endTime": "2026-05-26T05:16:16.523Z"
+  "successCount": 0,
+  "failureCount": 2,
+  "errors": [
+    "telugumallesh79@gmail.com: connect ECONNREFUSED 127.0.0.1:587",
+    "telugumallesh0757@gmail.com: connect ECONNREFUSED 127.0.0.1:587"
+  ],
+  "startTime": "2026-06-30T01:20:46.235Z",
+  "endTime": "2026-06-30T01:20:46.245Z"
 }
